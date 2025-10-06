@@ -10,27 +10,25 @@ from db_module import init_db, insert_article, get_latest_articles
 
 # -----------------------------
 # แก้ไข NLTK Error: ตรวจสอบและดาวน์โหลด NLTK resources
-# ต้องมั่นใจว่ามีการดาวน์โหลด 'punkt' และ 'stopwords' ซึ่งจำเป็นต่อ summarizer_module.py
+# เพิ่ม 'punkt_tab' เพื่อแก้ไขข้อผิดพลาดล่าสุดในการ Deploy
 # -----------------------------
 def download_nltk_resources():
-    """ตรวจสอบและดาวน์โหลด 'punkt' และ 'stopwords'"""
-    try:
-        nltk.data.find('tokenizers/punkt')
-    except nltk.downloader.DownloadError:
-        print("Downloading 'punkt' for NLTK...")
-        nltk.download('punkt', quiet=True)
-    except LookupError:
-        print("Downloading 'punkt' for NLTK...")
-        nltk.download('punkt', quiet=True)
-        
-    try:
-        nltk.data.find('corpora/stopwords')
-    except nltk.downloader.DownloadError:
-        print("Downloading 'stopwords' for NLTK...")
-        nltk.download('stopwords', quiet=True)
-    except LookupError:
-        print("Downloading 'stopwords' for NLTK...")
-        nltk.download('stopwords', quiet=True)
+    """ตรวจสอบและดาวน์โหลด NLTK resources ที่จำเป็น: 'punkt', 'punkt_tab', และ 'stopwords'"""
+    # รายการ NLTK resources ที่ต้องใช้สำหรับ tokenization และ summarization
+    required_resources = [
+        'punkt',        # สำหรับ sent_tokenize และ word_tokenize
+        'punkt_tab',    # เพิ่มเข้ามาเพื่อแก้ไขข้อผิดพลาด 'punkt_tab not found'
+        'stopwords'     # สำหรับการกรองคำใน summarizer_module
+    ]
+    
+    for resource in required_resources:
+        try:
+            # ใช้วิธีที่มั่นใจได้ว่าจะดาวน์โหลดหากยังไม่มี
+            print(f"Checking/Downloading '{resource}' for NLTK...")
+            # nltk.download() จะทำหน้าที่ตรวจสอบก่อนดาวน์โหลดโดยอัตโนมัติ
+            nltk.download(resource, quiet=True) 
+        except Exception as e:
+            print(f"Error downloading NLTK resource '{resource}': {e}")
         
 # เรียกใช้ฟังก์ชันดาวน์โหลดก่อนเริ่มแอป
 download_nltk_resources()
@@ -115,8 +113,5 @@ def digest(category):
     return render_template("digest_template.html", title=f"{category.title()} Digest", articles=articles)
 
 # -----------------------------
-# จุดเริ่มต้นของแอป
+# ส่วนท้ายของแอปพลิเคชัน (ถูกลบส่วน 'if __name__ == "__main__":' เพื่อรองรับ Gunicorn/Render)
 # -----------------------------
-if __name__ == "__main__":
-    # ใช้ host="0.0.0.0" เพื่อให้สามารถเข้าถึงจากภายนอกได้ในสภาพแวดล้อม container
-    app.run(debug=True, host="0.0.0.0", port=5000)
