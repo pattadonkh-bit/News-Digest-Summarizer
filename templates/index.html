@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Fetch Latest News</h2>
+<form method="POST" action="{{ url_for('fetch') }}">
+  <label>Category:</label>
+  <select name="category">
+    <option>technology</option>
+    <option>science</option>
+    <option>sports</option>
+    <option>business</option>
+  </select>
+  <label>Country:</label>
+  <input name="country" value="us" style="width:40px">
+  <button type="submit">Fetch Now</button>
+</form>
+
+<h2>Recent Articles</h2>
+{% for a in articles %}
+<article>
+  <h3><a href="{{ a[4] }}" target="_blank">{{ a[0] }}</a></h3>
+  <p><small>{{ a[1] }} • {{ a[2] }}</small></p>
+  <p>{{ a[3] or "No summary available" }}</p>
+</article>
+{% else %}
+<p>No articles yet. Fetch some news!</p>
+{% endfor %}
+{% endblock %}
