@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>{{ title }}</title>
+  <style>
+    body { font-family: sans-serif; margin: 24px; }
+    header { border-bottom: 1px solid #ddd; margin-bottom: 18px; }
+    article { margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px dashed #eee; }
+    h2 { margin: 0; font-size: 1.1rem; }
+    .meta { color: #666; font-size: .9rem; }
+    .summary { margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{ title }}</h1>
+    <div>Generated at: {{ generated_at }}</div>
+  </header>
+
+  {% for a in articles %}
+  <article>
+    <h2><a href="{{ a[4] }}" target="_blank">{{ a[0] }}</a></h2>
+    <div class="meta">{{ a[1] }} • {{ a[2] }} • {{ a[5] }}</div>
+    <div class="summary">{{ a[3] or "No summary available." }}</div>
+  </article>
+  {% endfor %}
+</body>
+</html>
