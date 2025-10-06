@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  newsdigest:
+    build: .
+    container_name: news-digest
+    ports:
+      - "5000:5000"
+    environment:
+      - NEWSAPI_KEY=${NEWSAPI_KEY}
+      - DB_PATH=/app/db/news.db
+    volumes:
+      - ./db:/app/db
+    restart: always
