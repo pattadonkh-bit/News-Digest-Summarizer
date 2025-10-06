@@ -1,0 +1,35 @@
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 20px auto;
+  max-width: 800px;
+  line-height: 1.6;
+  background-color: #fafafa;
+  color: #333;
+}
+header h1 a {
+  text-decoration: none;
+  color: #333;
+}
+form { margin-bottom: 20px; }
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover { background-color: #0056b3; }
+article {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+.flash-container { margin: 10px 0; }
+.flash {
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+.flash.info { background: #d0ebff; }
+.flash.success { background: #d3f9d8; }
+.flash.error { background: #ffe3e3; }
